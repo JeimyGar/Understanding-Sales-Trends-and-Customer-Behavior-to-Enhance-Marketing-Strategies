@@ -42,6 +42,118 @@ EDA involved exploring the sales data to answer key questions, such as:
 The Data analysis was done in excel and SQL 
 
 #### Excel
-In Excel, I cleaned and transformed the data. I made sure that there were no nulls or outstanding numbers. I also made sure that the column titles were descriptive, short and accurate. In addition to this, I made picot charts to better undesand the data. The first pivot table I made was to see the distribution between male an female buyers which was almost equal. I then wanted to see how many customers opted to be loyal members. The distribution of this showed that aproximitly 22% of customers were not members as opposed to 78% who were memebrs. lastly I wanted to see the total amount purchased per electronic product and its corresponding amoutn purchased in add-ons. I added up all of total price of each product and the add_on total of each product to their corresponding pivor chart. The results of these are illustrated int he bar charts. We can see that the product with the most amount ot total transaction prices were smartphones. This corresponds with smartphones also having the most amount of add ons purchased. Headphones were the lease bought product and not surprisingly, they were also the product with the least amount of add_ons purchased. surprisingly, tablet add_on purchases surpased laptop and smartwatch add-on purchases, eventhough laptop and smartwatch transcation totals were both higher than ttablet transaction totals. 
+In Excel, I cleaned and transformed the data. I made sure that there were no nulls or outstanding numbers. I also made sure that the column titles were descriptive, short and accurate. In addition to this, I made pivot charts to better undesand the data. The first pivot table I made was to see the distribution between male an female buyers which was almost equal. I then wanted to see how many customers opted to be loyal members. The distribution of this showed that aproximitly 22% of customers were not members as opposed to 78% who were memebrs. lastly I wanted to see the total amount purchased per electronic product and its corresponding amoutn purchased in add-ons. I added up all of total price of each product and the add_on total of each product to their corresponding pivor chart. The results of these are illustrated int he bar charts. We can see that the product with the most amount ot total transaction prices were smartphones. This corresponds with smartphones also having the most amount of add ons purchased. Headphones were the lease bought product and not surprisingly, they were also the product with the least amount of add_ons purchased. surprisingly, tablet add_on purchases surpased laptop and smartwatch add-on purchases, eventhough laptop and smartwatch transcation totals were both higher than ttablet transaction totals. 
 
-###SQL 
+### SQL 
+After I cleaned the data in excel, I uploaded the Electronic Sales data into bigquery to do explorataroy data analysis. 
+
+The first query I made was to see the total quantity of each product type purchased by male and female customers. I started off by selecting the product_type to select the type of product from the table. Then I used a CASE statement to sum the quatitiy of entries if the is 'Male'. I did the same for women. I used GROUP BY product type to group the the results byt the product type. This made sure that the aggregated operations were performed seperately for each product type. I finally sorted this result alphabetically by the product type. This provided important insight into what types of electronics each gender is most and least likely to spend their money on.
+
+``` SQL
+SELECT
+    product_type,
+    SUM(CASE WHEN gender = 'Male' THEN quantity ELSE 0 END) AS Male_Purchases,
+    SUM(CASE WHEN gender = 'Female' THEN quantity ELSE 0 END) AS Female_Purchases
+FROM
+    stunning-lambda-442403-k6.sales_data.digital_sales_date
+GROUP BY
+    product_type
+ORDER BY
+    product_type;
+```
+This next query is to see the units purchsed per age group. I started by using a CASE WHEN categorize the customers age into groups based on their age. The age groups I made were for teens, 20-29, 30-39, 40-49, 50-59, 60-69, 70-80. SUM(quantity) was used to sum the total quantity of units purchased per age group. This was then given the alias of 'Units-Purchased'. I then counted the number of custumers in each age group by counting the number of times a customer_id showed up and using Distinct to only count each number once. After that, I calculated the average total price of purchases for each age group and used ROUND to round two decimal points. Lastly, I counted the number instances when add-ons were purchased by each age group and aliased this as "Add-ons_purchased". I used Group by to group the first column, which was age. 
+
+```SQL
+SELECT CASE 
+WHEN age <20 THEN 'Teens'
+WHEN age >= 20 AND age < 30 THEN '20_Year_olds'
+WHEN age >= 30 AND age < 40 THEN '30_Year_olds'
+WHEN age >= 40 AND age < 50 THEN '40_Year_olds'
+WHEN age >= 50 AND age < 60 THEN '50_Year_olds'
+WHEN age >= 60 AND age < 70 THEN '60_Year_olds'
+WHEN age >= 70 AND age <= 80 THEN '70_Year_olds'
+END AS Age, SUM(quantity) AS Units_Purchased, COUNT(DISTINCT customer_id) AS total_customers, ROUND(AVG(Total_price),2) AS Average_Purchased_Price, COUNT(Add_ons_Purchased) AS Add_ons_Purchased
+FROM stunning-lambda-442403-k6.sales_data.digital_sales_date
+GROUP BY 1
+ORDER BY 1;
+```
+I then wanted to analyze the total sales data per month to identiy peak sales periods. I first need to extract the month from the purchase date and and assign a month name to each eow based on the month value. I did this using CASE WHEN EXTRACT and named this column 'month-name. Then I used SUM(quanity) to sum the quanityt of units purchased. To get total price of transactions foe each month I  summed the total price and rounded 2 decimal places. This was then given the alias of 'Total_transaction_sum'. Lastly, i calculated the average total prive of the total price of transactions and rounded it two decimal points. Using GROUP BY to group the month-name, I was able to group the results by the month column. This query helped me understand the sales trends on a monthly basis. 
+
+``` SQL
+SELECT 
+    CASE 
+      WHEN EXTRACT(Month FROM purchase_date) = 1 THEN 'January'
+      WHEN EXTRACT(Month FROM purchase_date) = 2 THEN 'February'
+      WHEN EXTRACT(Month FROM purchase_date) = 3 THEN 'March'
+      WHEN EXTRACT(Month FROM purchase_date) = 4 THEN 'April'
+      WHEN EXTRACT(Month FROM purchase_date) = 5 THEN 'May'
+      WHEN EXTRACT(Month FROM purchase_date) = 6 THEN 'June'
+      WHEN EXTRACT(Month FROM purchase_date) = 7 THEN 'July'
+      WHEN EXTRACT(Month FROM purchase_date) = 8 THEN 'August'
+      WHEN EXTRACT(Month FROM purchase_date) = 9 THEN 'September'
+      WHEN EXTRACT(Month FROM purchase_date) = 10 THEN 'October'
+      WHEN EXTRACT(Month FROM purchase_date) = 11 THEN 'November'
+      WHEN EXTRACT(Month FROM purchase_date) = 12 THEN 'December'
+      ELSE 'Unknown'
+    END AS month_name, SUM(quantity) AS Total_Number_units_purchased, Round(SUM(Total_price),2) AS Total_Transaction_Sum, Round(AVG(total_price),2) AS Average_Transaction_Price
+FROM stunning-lambda-442403-k6.sales_data.digital_sales_date
+GROUP BY 1
+ORDER BY 1;
+```
+Lastly, I wanted to see the quantity of purchases each electronic type had per month. I first made a CTE so we can refrence the month names, which were extracted from the purchase date, and given the correponding month name. In the main query, I selected the month name and gave it the alias 'Month'. Then I calculated the total quantity for each product type. For example, in "SUM(CASE WHEN product-type = 'Smartphone' THEN quantity ELSE 0 END) AS smartphone" I used SUM to sum the quantity of smartphones sold if the product type was 'smartphone'. I did the same for the rest of the electronic products. I used GROUP BY to aggreated the quantites for each product type within each month. This query provided me with a clear view of the quantity of products sold each month for each product type, alloqing me to analyze sales trends over time for each product.  
+``` SQL
+WITH Months AS (
+  SELECT 
+    EXTRACT(Month FROM purchase_date) AS month_num,
+    CASE 
+      WHEN EXTRACT(Month FROM purchase_date) = 1 THEN 'January'
+      WHEN EXTRACT(Month FROM purchase_date) = 2 THEN 'February'
+      WHEN EXTRACT(Month FROM purchase_date) = 3 THEN 'March'
+      WHEN EXTRACT(Month FROM purchase_date) = 4 THEN 'April'
+      WHEN EXTRACT(Month FROM purchase_date) = 5 THEN 'May'
+      WHEN EXTRACT(Month FROM purchase_date) = 6 THEN 'June'
+      WHEN EXTRACT(Month FROM purchase_date) = 7 THEN 'July'
+      WHEN EXTRACT(Month FROM purchase_date) = 8 THEN 'August'
+      WHEN EXTRACT(Month FROM purchase_date) = 9 THEN 'September'
+      WHEN EXTRACT(Month FROM purchase_date) = 10 THEN 'October'
+      WHEN EXTRACT(Month FROM purchase_date) = 11 THEN 'November'
+      WHEN EXTRACT(Month FROM purchase_date) = 12 THEN 'December'
+      ELSE 'Unknown'
+    END AS month_name,
+    product_type,
+    quantity
+  FROM stunning-lambda-442403-k6.sales_data.digital_sales_date
+)
+SELECT 
+  month_name AS Months,
+  SUM(CASE WHEN product_type = 'Smartphone' THEN quantity ELSE 0 END) AS Smartphone, 
+  SUM(CASE WHEN product_type = 'Smartwatch' THEN quantity ELSE 0 END) AS Smartwatch,
+  SUM(CASE WHEN product_type = 'Tablet' THEN quantity ELSE 0 END) AS Tablet,
+  SUM(CASE WHEN product_type = 'Laptop' THEN quantity ELSE 0 END) AS Laptop,
+  SUM(CASE WHEN product_type = 'Headphones' THEN quantity ELSE 0 END) AS Headphones
+FROM Months
+GROUP BY month_num, month_name
+ORDER BY month_num;
+```
+### Results/Findings
+
+The analysis results are summarized as follows:
+1. In this bar chart, we can see the quantiy of each product bought by each gender. First, I wanted to see the distribution of genders. By counting the total number of male and female customers, I was able to make a pie chart showing the distribution. We can see in the pie chart labled "Gender" that there are slighly more males than males, but the difference is very small. With this in mind I made the bar chart titled "Quantity of Prdicts Bought by Gender". We can see that the Y-axis list the numerical number of products bought. The Y axis relays the product type and the purchase made by each gender. We can see that males have consistily bought more quantities of each product. This can be explained by the slightly higher number of male customers. It is clear that men and women in this database have similar purchasing habits. The most popular product bough are smartphones and the least popular electronic are headphones for both genders.
+<img width="400" alt="Electronic_1" src="https://github.com/user-attachments/assets/49b44136-4339-470c-b458-f5315040b9d7">
+<img width="305" alt="gender" src="https://github.com/user-attachments/assets/fc7849e8-d8d1-491c-95fe-cd91049bf4a7">
+
+2. The "Total Units Purchased per Age Group" bar cahrt dispalays the units purchased per customers grouped by age group. As previously stated, the age groups are teens, 20-29, 30-39, 40-49, 50-59, 60-69, 70-80. In this distribution we can see the teens bar is drastically shorter than the rest of the age groups. This can be explained because the teens age group starts at 18 years old and only includes 18 and 19 year olds. This means that there are significanly less custumers for this age range. We can also see the bar with the most units purchased is the 70s age group. One thing we have to keep in mind for this age group is that it includes 1 additional age that the other age groups do not have. This is because the age group starts at 70 and includes 80 instead of it stopping at 79. Even though we have slighly more customers in this age group, the difference between it and the other bars is not huge. We can rule out any age group from being significant outliers in the number of units purchased. 
+<img width="798" alt="Electronic_2" src="https://github.com/user-attachments/assets/5a19eea2-9bea-44be-96e8-37ba04a15bde">
+
+3. In the "Total Dollar Amount Purchased per Month chart" I analyzed the total transaction amount in dollars per month. We can we that there is a very clear dip in the total transaction amount for the last quarter of the month, starting in slighly dipping in September and plummeting in October. This downturn stays consistent from October to December. Since the time period for this data is from September 2023 to September 2024, we know the January bar immediatly precedes the December data. This means that there is an unexpected and drastic increase of transaction activity from one month to the other. The downturn of activity from October to December is also very odd and unexpected. These months are consistenly associated with higher spending due to holidays like Christmas and events like black Friday. Apart from this there seem to be no other significant outliers in the total transaction amount per month in this dataset.
+<img width="403" alt="Electronic_3" src="https://github.com/user-attachments/assets/1944511f-f255-4062-aaa7-18591e593505">
+
+4. The last graph I made in Tableau was the "Quantity of Electronics Purchased per Month". This graph is useful to determine product sales performace over time. The bar graph covers all 12 month of the sales data starting in January. For each month it also list each product type and the total units sold for that product in that month. We can see that smartphones are the best selling product for each month and headphones have the least amount of sales consistently. With headphones, we can also see that there is a very sharp decline in the quantity sold starting in october. This decline can be seen for the rest of the product types as well, but not as drastic as with headphones. Headphone sales essentailly stop in the last quarter of the month. Although headphones have the most drasctic change, we can see there is a significant drop in sales for the other products as well. I intially thought this change could be caused by faulty products and poor customer satisfaction. I decided to take a look at the rating for each of these products. When I graphed the average star rating for these products I saw that apart from smartphone having the highest rating, all other rating were the same. If there had been a sudden decline in the quality of the product, I would expect to see this in the rating. I specially would expect to see the rating for headphones to go since no sales were made in 3 months. This tells me it was not an issue with the customer satisfaction of the product. Next I suspected that the problem might lay in problems that come up after equipment is purchased. It is not clear why this plummet in sales is so sudden but it could do with supply chain issues.  
+<img width="987" alt="Electronic_4" src="https://github.com/user-attachments/assets/5a28bf7e-0125-4267-99a9-d463a2937198">
+<img width="707" alt="completed orders" src="https://github.com/user-attachments/assets/6daf0b99-b7d5-4640-9a57-8fe755a00e85">
+<img width="353" alt="rating" src="https://github.com/user-attachments/assets/e651fd45-ad47-456c-9ef0-46d002ce23c0">
+
+
+
+
+
