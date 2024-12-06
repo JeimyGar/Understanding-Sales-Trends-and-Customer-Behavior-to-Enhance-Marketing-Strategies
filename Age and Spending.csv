@@ -1,0 +1,8 @@
+Age,Units_Purchased,total_customers,Average_Purchased_Price,Add_ons_Purchased
+20_Year_olds,17008,1893,3157.14,2367
+30_Year_olds,17605,1940,3203.42,2418
+40_Year_olds,17501,1925,3126.64,2475
+50_Year_olds,17518,1937,3231.04,2390
+60_Year_olds,17868,1930,3175.07,2442
+70_Year_olds,18778,2135,3184.58,2579
+Teens,3433,376,3193.64,461
