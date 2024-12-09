@@ -40,7 +40,7 @@ EDA involved exploring the sales data to answer key questions, such as:
 
 ### Data Analysis
 
-The Data analysis was done in excel and SQL 
+The Data analysis was done in Excel and SQL 
 
 #### Excel
 In Excel, I cleaned and transformed the data, ensuring there were no null or outliers.  I also made sure that the column titles were descriptive, concise, and accurate. Additionally, I made pivot tables to better understand the data. The first pivot table I made displayed the distribution between male and female buyers, which was almost equal. Next, I analyzed how many customers opted to be loyal members. The distribution of this showed that approximately 22% of customers were members while 78% were not members. Lastly, I reviewed the total amount of purchased electronic products and the corresponding amount of instances an add-on was purchased. I summarized the total purchases and add-ons in a pivot chart. The results of these are illustrated in the bar charts below. The bar chart illustrates the product with the most purchases were smartphones, which also had the most instances of add-ons purchased. Headphones were the least bought product and, unsurprisingly, they were also the product with the least amount of add_ons purchased. 
@@ -48,7 +48,7 @@ In Excel, I cleaned and transformed the data, ensuring there were no null or out
 <img width="471" alt="Add-ons " src="https://github.com/user-attachments/assets/ee5cafe0-7ea9-4bcd-a283-578ae8f4929b">
 
 ### SQL 
-After I cleaned the data in excel, I uploaded the Electronic Sales data into bigquery to do explorataroy data analysis. 
+After I cleaned the data in Excel, I uploaded the Electronic Sales data into bigquery to do explorataroy data analysis. 
 
 The first query I made was to see the total quantity of each product type purchased by male and female customers. I started off by selecting the product_type to select the type of product from the table. Then I used a CASE statement to sum the quatitiy of entries if the is 'Male'. I did the same for women. I used GROUP BY product type to group the the results byt the product type. This made sure that the aggregated operations were performed seperately for each product type. I finally sorted this result alphabetically by the product type. This provided important insight into what types of electronics each gender is most and least likely to spend their money on.
 
