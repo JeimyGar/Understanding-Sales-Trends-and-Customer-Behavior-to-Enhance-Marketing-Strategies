@@ -44,6 +44,7 @@ The Data analysis was done in Excel and SQL
 
 #### Excel
 In Excel, I cleaned and transformed the data, ensuring there were no null or outliers.  I also made sure that the column titles were descriptive, concise, and accurate. Additionally, I made pivot tables to better understand the data. The first pivot table I made displayed the distribution between male and female buyers, which was almost equal. Next, I analyzed how many customers opted to be loyal members. The distribution of this showed that approximately 22% of customers were members while 78% were not members. Lastly, I reviewed the total amount of purchased electronic products and the corresponding amount of instances an add-on was purchased. I summarized the total purchases and add-ons in a pivot chart. The results of these are illustrated in the bar charts below. The bar chart illustrates the product with the most purchases were smartphones, which also had the most instances of add-ons purchased. Headphones were the least bought product and, unsurprisingly, they were also the product with the least amount of add_ons purchased. 
+
 <img width="367" alt="member count" src="https://github.com/user-attachments/assets/93b7a356-9535-4d3d-979c-d13faa19b552">
 <img width="471" alt="Add-ons " src="https://github.com/user-attachments/assets/ee5cafe0-7ea9-4bcd-a283-578ae8f4929b">
 
