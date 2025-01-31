@@ -1,4 +1,4 @@
-# Understanding Sales Trends and Customer Behavior to Enhance Marketing Strategies
+# Electronic Sales Trends and Customer Behavior 
 ## Table of Contents
 - [Project Overview](#project-overview)
 - [Data Sources](#data-sources)
