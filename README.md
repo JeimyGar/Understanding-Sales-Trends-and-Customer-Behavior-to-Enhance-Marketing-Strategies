@@ -9,7 +9,7 @@
 - [Results/Findings](results/findings)
 - [Recommendations](recommendations)
 
-Understanding customer behavior and sales trends to make data_driven decisions to enhance marketing strategy. 
+Understanding customer behavior and sales trends to make data-driven decisions to enhance marketing strategy. 
 
 ### Project Overview
 The objective of this data analysis project is to gain insight into customer behavior and sales trends to enhance marketing strategies. This dataset includes demographic information about customers, such as gender and age, as well as their purchasing habits for various electronic products. By analyzing this data, I aim to uncover purchasing patterns and trends throughout the year. Additionally, intend to examine how various factors, such as customer member loyalty status and shipping type, impact purchasing patterns.
