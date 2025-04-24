@@ -12,7 +12,7 @@
 Understanding customer behavior and sales trends to make data-driven decisions to enhance marketing strategy. 
 
 ### Project Overview
-The objective of this data analysis project is to gain insight into customer behavior and sales trends to enhance marketing strategies. This dataset includes demographic information about customers, such as gender and age, as well as their purchasing habits for various electronic products. By analyzing this data, I aim to uncover purchasing patterns and trends throughout the year. Additionally, intend to examine how various factors, such as customer member loyalty status and shipping type, impact purchasing patterns.
+The objective of this data analysis project is to gain insight into customer behavior and sales trends to enhance marketing strategies. This dataset includes demographic information about customers, such as gender and age, as well as their purchasing habits for various electronic products. By analyzing this data, I aim to uncover purchasing patterns and trends throughout the year. Additionally, I intend to examine how various factors, such as customer member loyalty status and shipping type, impact purchasing patterns.
 ### Data Sources 
 
 The primary dataset used for this analysis is the "Customer purchase behavior - Electronic Sales Data" dataset from Kaggle, which can be found here. This data set contains sales transaction records for an electronics company, collected over a one-year period from September 2023 to 2024. It includes demographic information such as gender and age of buyers, as well as details on product types, which encompass various electronics like Smartphones, Laptops, Tablets, and smartwatches. 
